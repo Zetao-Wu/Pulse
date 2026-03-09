@@ -1,6 +1,7 @@
 import threading, signal, sys, os, time
 from logger import log
 from scanner import run_scanner
+from api import run_api
 
 
 
@@ -33,11 +34,20 @@ if __name__ == "__main__":
         daemon=True
     )
     scanner.start()
+
+    api_thread = threading.Thread(
+        target=run_api,
+        args=(initial_res, shutdown_flag),
+        daemon=True
+    )
+
+    api_thread.start()
     
     while not shutdown_flag.is_set():
         time.sleep(1)
     log("INFO", "Pulse Stopping")
     scanner.join(timeout=5)
+    api_thread.join(timeout=5)
     log("INFO", "Pulse Stopped Cleanly")
 
 
