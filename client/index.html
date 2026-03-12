@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse — System Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>PULSE</h1>
+        <p>System Intelligence Platform</p>
+        <span id="last-updated">Waiting for data...</span>
+    </header>
+
+    <!-- METRICS BAR -->
+    <section class="metrics-bar">
+        <div class="metric-card">
+            <div class="metric-value" id="total-procs">--</div>
+            <div class="metric-label">Processes</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value" id="alert-count">--</div>
+            <div class="metric-label">Alerts</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value" id="scan-count">--</div>
+            <div class="metric-label">Scans</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value" id="last-scan">--</div>
+            <div class="metric-label">Last Scan</div>
+        </div>
+    </section>
+
+    <!-- ALERTS SECTION -->
+    <section class="section">
+        <h2>Alerts</h2>
+        <div id="alerts-container">
+            <p class="no-alerts">No alerts — system healthy</p>
+        </div>
+    </section>
+
+    <!-- PROCESS TABLE -->
+    <section class="section">
+        <h2>Processes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>PID</th>
+                    <th>CPU%</th>
+                    <th>Memory MB</th>
+                    <th>Threads</th>
+                    <th>FDs</th>
+                </tr>
+            </thead>
+            <tbody id="process-table-body">
+                <!-- JavaScript fills this in -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>

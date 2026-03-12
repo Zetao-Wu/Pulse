@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0a0a0f;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    padding: 24px;
+}
+
+/* HEADER */
+header {
+    border-bottom: 1px solid #222;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+header h1 {
+    font-size: 28px;
+    color: #00ff88;
+    letter-spacing: 6px;
+}
+
+header p {
+    color: #666;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+#last-updated {
+    font-size: 11px;
+    color: #444;
+    float: right;
+    margin-top: -28px;
+}
+
+/* METRICS BAR */
+.metrics-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metric-card {
+    flex: 1;
+    background: #111118;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 36px;
+    font-weight: bold;
+    color: #00ff88;
+}
+
+.metric-label {
+    font-size: 11px;
+    color: #666;
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* SECTIONS */
+.section {
+    background: #111118;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.section h2 {
+    font-size: 13px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+}
+
+/* ALERTS */
+.alert-item {
+    background: #1a1008;
+    border: 1px solid #ff6600;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.alert-item .alert-name {
+    color: #ff6600;
+    font-weight: bold;
+}
+
+.alert-item .alert-details {
+    color: #aaa;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.no-alerts {
+    color: #00ff88;
+    font-size: 13px;
+}
+
+/* PROCESS TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+thead th {
+    text-align: left;
+    color: #444;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #222;
+}
+
+tbody tr {
+    border-bottom: 1px solid #1a1a1a;
+}
+
+tbody tr:hover {
+    background: #16161e;
+}
+
+tbody td {
+    padding: 8px 12px;
+    color: #ccc;
+}
+
+tbody td:first-child {
+    color: #fff;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+tbody td:nth-child(3) {
+    color: #00ff88;
+}

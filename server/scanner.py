@@ -2,6 +2,7 @@ import subprocess
 from logger import log
 from datetime import datetime, timezone
 from detectors import check_anomalies, check_fd_leaks
+from storage import save_scan, cleanup_old_data
 
 
 def get_all_fd_counts():
@@ -150,6 +151,13 @@ def run_scanner(results_store, shutdown_flag):
         duration = round((datetime.now(timezone.utc) - begin_time).total_seconds(), 3)
 
         log("INFO", "Scanner Completed", scan=scan_count, processes=len(processes), duration_s=duration)
+
+        save_scan(processes, alerts)
+        log("INFO", "Database Saved Scanned")
+
+        cleanup_old_data()
+        log("INFO", "Database Cleaning Old Data")
+
 
         shutdown_flag.wait(timeout=3)
 

@@ -47,7 +47,8 @@ def handle_request(client_socket, results_store):
 
         response = (
             "HTTP/1.1 " + status + "\r\n"
-            "Content-Type: application/json\r\n"
+            "Contenat-Type: application/json\r\n"
+            "Access-Control-Allow-Origin: *\r\n"
             "Content-Length: " + str(len(body_str)) + "\r\n"
             "\r\n" +
             body_str

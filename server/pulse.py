@@ -2,6 +2,7 @@ import threading, signal, sys, os, time
 from logger import log
 from scanner import run_scanner
 from api import run_api
+from storage import init_db
 
 
 
@@ -15,6 +16,10 @@ def handle_shutdown(signum, frame):
 if __name__ == "__main__":    
     pid = os.getpid()
     log("INFO", "Pulse Starting", pid=pid)
+
+    init_db()
+    log("INFO", "Database Starting")
+
     
     initial_res = {
         "processes": [],
@@ -23,6 +28,7 @@ if __name__ == "__main__":
         "total_procs": 0,
         "alerts": [],
     }
+
 
     # one for sigterm, one for sigint
     signal.signal(signal.SIGTERM, handle_shutdown)
