@@ -53,6 +53,10 @@ def validate_req(raw_req):
     """
     api_key = get_api_key_from_req(raw_req)
 
+    first_line = raw_req.split("\r\n")[0]
+    if first_line.startswith("OPTIONS"):
+        return True, 200, "ok"
+
     if api_key is None:
         log("WARN", "Missing API Key")
         return False, 401, "missing api key"

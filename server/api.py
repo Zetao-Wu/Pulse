@@ -28,6 +28,19 @@ def handle_request(client_socket, results_store):
 
         parts = first_line.split(" ")
         path = parts[1] if len(parts) > 1 else "/"
+        method = parts[0] if len(parts) > 0 else "GET"
+
+
+        if method == "OPTIONS":
+            response = (
+                "HTTP/1.1 204 No Content\r\n"
+                "Access-Control-Allow-Origin: *\r\n"
+                "Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n"
+                "Access-Control-Allow-Headers: X-API-Key, Content-Type\r\n"
+                "\r\n"
+            )
+            client_socket.sendall(response.encode("utf-8"))
+            return
 
         if path == "/health":
             status = "200 OK"
