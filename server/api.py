@@ -1,11 +1,28 @@
 import json, socket, threading
 from logger import log
+from auth import validate_req
 
 PORT = 9000
 
 def handle_request(client_socket, results_store):
     try:
         raw_req = client_socket.recv(1024).decode("utf-8")
+
+        valid, status_code, message = validate_req(raw_req)
+
+        if not valid:
+            body_str = json.dumps({"error": message})
+
+            response = (
+                "HTTP/1.1 " + str(status_code) + "\r\n"
+                "Content-Type: application/json\r\n"
+                "Access-Control-Allow-Origin: *\r\n"
+                "Content-Length: " + str(len(body_str)) + "\r\n"
+                "\r\n" +
+                body_str
+            )
+            client_socket.sendall(response.encode("utf-8"))
+            return
 
         first_line = raw_req.split("\r\n")[0]
 
@@ -47,7 +64,7 @@ def handle_request(client_socket, results_store):
 
         response = (
             "HTTP/1.1 " + status + "\r\n"
-            "Contenat-Type: application/json\r\n"
+            "Content-Type: application/json\r\n"
             "Access-Control-Allow-Origin: *\r\n"
             "Content-Length: " + str(len(body_str)) + "\r\n"
             "\r\n" +

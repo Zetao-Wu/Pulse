@@ -1,9 +1,13 @@
 const API = "http://localhost:9000"
+const API_KEY = "dev-key-123"
+
 
 // ── Update metric cards ──────────────────────────────────────────
 async function loadMetrics() {
     try {
-        const res  = await fetch(API + "/metrics")
+        const res  = await fetch(API + "/metrics", {
+            headers: { "X-API-Key": API_KEY }
+        })
         const data = await res.json()
 
         document.getElementById("total-procs").textContent = data.total_procs
@@ -24,7 +28,9 @@ async function loadMetrics() {
 // ── Update alerts panel ──────────────────────────────────────────
 async function loadAlerts() {
     try {
-        const res     = await fetch(API + "/alerts")
+        const res     = await fetch(API + "/alerts", {
+            headers: { "X-API-Key": API_KEY }
+        })
         const data    = await res.json()
         const container = document.getElementById("alerts-container")
 
@@ -48,7 +54,9 @@ async function loadAlerts() {
 // ── Update process table ─────────────────────────────────────────
 async function loadProcesses() {
     try {
-        const res  = await fetch(API + "/processes")
+        const res  = await fetch(API + "/processes", {
+            headers: { "X-API-Key": API_KEY }
+        })
         const data = await res.json()
         const tbody = document.getElementById("process-table-body")
 

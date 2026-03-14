@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulse
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pulse
+  template:
+    metadata:
+      labels:
+        app: pulse
+    spec:
+      containers:
+      - name: pulse
+        image: pulse:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 9000
