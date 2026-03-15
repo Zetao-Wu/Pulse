@@ -21,6 +21,7 @@ def init_db():
             memory_mb   REAL,
             threads     INTEGER,
             open_fds    INTEGER,
+            hostname    TEXT DEFAULT 'local',
             scanned_at  TEXT DEFAULT CURRENT_TIMESTAMP
         )
     """)
@@ -43,7 +44,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-def save_scan(processes, alerts):
+def save_scan(processes, alerts, hostname='local'):
     """
     1. connect to pulse.db
     2. for each process in processes list:
@@ -59,9 +60,9 @@ def save_scan(processes, alerts):
 
     for p in processes:
         cursor.execute("""
-            INSERT INTO processes(pid, name, cpu, memory_mb, threads, open_fds)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (p["pid"], p["name"], p["cpu_percent"], p["memory_mb"], p["threads"], p["open_fds"]))
+            INSERT INTO processes(pid, name, cpu, memory_mb, threads, hostname, open_fds)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (p["pid"], p["name"], p["cpu_percent"], p["memory_mb"], p["threads"], hostname, p["open_fds"]))
 
     for a in alerts:
         cursor.execute("""

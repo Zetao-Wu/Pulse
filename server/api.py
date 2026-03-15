@@ -1,12 +1,37 @@
 import json, socket, threading
 from logger import log
 from auth import validate_req
+from datetime import datetime, timezone
+from detectors import check_anomalies, check_fd_leaks
+from storage import save_scan
 
 PORT = 9000
 
 def handle_request(client_socket, results_store):
     try:
-        raw_req = client_socket.recv(1024).decode("utf-8")
+        raw = b""
+        client_socket.settimeout(10.0)
+        try:
+            while True:
+                chunk = client_socket.recv(4096)
+                if not chunk:
+                    break
+                raw += chunk
+
+                if b"\r\n\r\n" in raw:
+                    header_part = raw.split(b"\r\n\r\n")[0]
+                    body_part = raw.split(b"\r\n\r\n", 1)[1]
+                    content_length = 0
+                    for line in header_part.split(b"\r\n"):
+                        if line.lower().startswith(b"content-length:"):
+                            content_length = int(line.split(b":")[1].strip())
+                            break
+                    if content_length == 0 or len(body_part) >= content_length:
+                        break
+        except Exception:
+            pass
+
+        raw_req = raw.decode("utf-8")
 
         valid, status_code, message = validate_req(raw_req)
 
@@ -41,6 +66,7 @@ def handle_request(client_socket, results_store):
             )
             client_socket.sendall(response.encode("utf-8"))
             return
+        
 
         if path == "/health":
             status = "200 OK"
@@ -69,6 +95,26 @@ def handle_request(client_socket, results_store):
                 "last_scan":   results_store["last_scan"],
                 "alert_count": len(results_store["alerts"])
             }
+        elif path == "/ingest" and method == "POST":
+            try:
+                body = raw_req.split("\r\n\r\n", 1)[1]
+                payload = json.loads(body)
+                hostname = payload.get("hostname", "unknown")
+                processes = payload.get("processes", [])
+                results_store["processes"] = processes
+                results_store["last_scan"] = datetime.now(timezone.utc).isoformat()
+                results_store["scan_count"] += 1
+                alerts = check_anomalies(processes) + check_fd_leaks(processes)
+                results_store["alerts"] = alerts
+                save_scan(processes, alerts, hostname)
+                status = "200 OK"
+                body = {
+                    "status": "ok",
+                    "received": len(processes)
+                }
+            except Exception as e:
+                status = "500 Internal Server Error"
+                body   = {"error": str(e)}
         else:
             status = "404 Not Found"
             body = {"error": "not found"}

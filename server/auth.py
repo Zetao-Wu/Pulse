@@ -15,14 +15,10 @@ request_counts = {}
 RATE_LIMIT = 100
 
 def get_api_key_from_req(raw_req):
-    """
-    Splits the HTTP request to get the API Key
-    """
     lines = raw_req.split("\r\n")
     for line in lines:
-        if line.startswith("X-API-Key:"):
+        if line.lower().startswith("x-api-key:"):
             return line.split(": ", 1)[1].strip()
-        
     return None
 
 
